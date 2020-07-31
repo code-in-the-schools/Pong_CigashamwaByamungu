@@ -21,6 +21,7 @@ class Ball:
         self.change_y = 0
  
  
+ 
 def make_ball():
     """
     Function to make a new, random ball.
