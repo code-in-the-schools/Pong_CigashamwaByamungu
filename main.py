@@ -1,16 +1,30 @@
 import pygame
 import random
  
-BLACK = (0, 0, 0)
+
+
 WHITE = (255, 255, 255)
  
 SCREEN_WIDTH = 700
 SCREEN_HEIGHT = 500
 BALL_SIZE = 25
  
- 
+
+img_patch = os.patch.join('Paddle.png')
+
+class character(object):
+  def __init__(self):
+
+    character.image = pygame.image.load ('Paddle.png')
+    self.image = character.image
+
+    self.x
+
+#still working process!!
+
+
 class Ball:
-    """
+    """"
     Class to keep track of a ball's location and vector.
     """
     def __init__(self):
@@ -19,14 +33,13 @@ class Ball:
         self.change_x = 0
         self.change_y = 0
  
-
  
 def make_ball():
     """
     Function to make a new, random ball.
     """
     ball = Ball()
-  
+
     ball.x = random.randrange(BALL_SIZE, SCREEN_WIDTH - BALL_SIZE)
     ball.y = random.randrange(BALL_SIZE, SCREEN_HEIGHT - BALL_SIZE)
  
@@ -52,7 +65,7 @@ def main():
 
     done = False
  
-
+ 
     clock = pygame.time.Clock()
  
     ball_list = []
@@ -60,21 +73,25 @@ def main():
     ball = make_ball()
     ball_list.append(ball)
  
+ 
     while not done:
+  
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 done = True
             elif event.type == pygame.KEYDOWN:
+ 
                 if event.key == pygame.K_SPACE:
                     ball = make_ball()
                     ball_list.append(ball)
+ 
 
         for ball in ball_list:
        
             ball.x += ball.change_x
             ball.y += ball.change_y
  
-           
+     
             if ball.y > SCREEN_HEIGHT - BALL_SIZE or ball.y < BALL_SIZE:
                 ball.change_y *= -1
             if ball.x > SCREEN_WIDTH - BALL_SIZE or ball.x < BALL_SIZE:
@@ -83,15 +100,18 @@ def main():
 
         screen.fill(BLACK)
  
+     
         for ball in ball_list:
             pygame.draw.circle(screen, WHITE, [ball.x, ball.y], BALL_SIZE)
- 
+
         clock.tick(60)
  
-        
+
         pygame.display.flip()
+ 
  
     pygame.quit()
  
 if __name__ == "__main__":
     main()
+﻿
