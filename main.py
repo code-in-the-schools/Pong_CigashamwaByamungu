@@ -1,117 +1,88 @@
 import pygame
-import random
+import os
+
+img_path = os.path.join('paddle.png')
  
-#
-
-WHITE = (255, 255, 255)
- 
-SCREEN_WIDTH = 700
-SCREEN_HEIGHT = 500
-BALL_SIZE = 25
- 
-
-img_patch = os.patch.join('Paddle.png')
-
-class character(object):
-  def __init__(self):
-
-    character.image = pygame.image.load ('Paddle.png')
-    self.image = character.image
-
-    self.x
-
 #still working process!!
 
+class player(object):
+  def __init__(self):
+    player.image = pygame.image.load('Supersonic.png')
+    self.image = player.image
 
-class Ball:
-    """"
-    Class to keep track of a ball's location and vector.
-    """
-    def __init__(self):
-        self.x = 0
-        self.y = 0
-        self.change_x = 0
-        self.change_y = 0
- 
- 
-def make_ball():
-    """
-    Function to make a new, random ball.
-    """
-    ball = Ball()
+    self.x = 50
+    self.y = 50
+    self.hitbox = (self.x, self.y, 55, 55)
 
-    ball.x = random.randrange(BALL_SIZE, SCREEN_WIDTH - BALL_SIZE)
-    ball.y = random.randrange(BALL_SIZE, SCREEN_HEIGHT - BALL_SIZE)
+  def draw(self, surface):
+      surface.blit(self.image, (self.x, self.y))
+
+
+
+class Paddle(object):
+  def __init__(self):
+    pygame.sprite.Sprite.__init__(self)
+    Paddle.image = pygame.image.load ('Paddle.png')
+    self.image = Paddle.image
+    self.image = pygame.transform.scale(self.image,(50,200))
+    self.x = 50
+    self.y = 50
+    self.hitbox = (self.x - 25, self.y - 25, 55, 55)
+
+  def draw(self, surface):
+    surface.blit(self.image, (self.x, self.y))
  
+
+  def movement (self):
+    key = pygame.key.get_pressed()
+
+    if key[pygame.K_DOWN]:
+      self.y -= 1
+    if key[pygame.K_UP]:
+      self.y += 2
+
+
+class Wall(object):
+  def __init__(self):
+    pygame.sprite.Sprite.__init__(self)
+    Wall.image = pygame.image.load('Wall.png')
+    self.image = Wall.image
+    self.x = 0
+    self.y = 0
+
+  def draw (self, surface, width, height, x,y):
+    surface.blit(self.image, (self.x, self.y))
+    self.image = pygame.transform.scale(self.image(width, height))
+    self.x = x
+    self.y = y
    
-    ball.change_x = random.randrange(-2, 3)
-    ball.change_y = random.randrange(-2, 3)
- 
-    return ball
- 
- 
-def main():
-    """
-    This is our main program.
-    """
-    pygame.init()
- 
 
-    size = [SCREEN_WIDTH, SCREEN_HEIGHT]
-    screen = pygame.display.set_mode(size)
- 
-    pygame.display.set_caption("Bouncing Balls")
- 
 
-    done = False
- 
- 
-    clock = pygame.time.Clock()
- 
-    ball_list = []
- 
-    ball = make_ball()
-    ball_list.append(ball)
- 
- 
-    while not done:
-  
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                done = True
-            elif event.type == pygame.KEYDOWN:
- 
-                if event.key == pygame.K_SPACE:
-                    ball = make_ball()
-                    ball_list.append(ball)
- 
+pygame.init()
+screen_width = 600
+screen_height = 600
+screen = pygame.display.set_mode((screen_width, screen_height))
 
-        for ball in ball_list:
-       
-            ball.x += ball.change_x
-            ball.y += ball.change_y
- 
-     
-            if ball.y > SCREEN_HEIGHT - BALL_SIZE or ball.y < BALL_SIZE:
-                ball.change_y *= -1
-            if ball.x > SCREEN_WIDTH - BALL_SIZE or ball.x < BALL_SIZE:
-                ball.change_x *= -1
- 
 
-        screen.fill(BLACK)
- 
-     
-        for ball in ball_list:
-            pygame.draw.circle(screen, WHITE, [ball.x, ball.y], BALL_SIZE)
+Sprite = player()
+clock = pygame.time.clock()
+P = Paddle()
+W = Wall()
 
-        clock.tick(60)
- 
+running = True
+while running:
+ for event in pygame.event.get():
+    if event.type == pygame.QUIT:
+      pygame.quit()
+      running = False
 
-        pygame.display.flip()
- 
+
+    screen.fill((255, 255, 255))
+
+    pygame.display.update()
+
+    clock.tick(60) 
  
     pygame.quit()
  
-if __name__ == "__main__":
-    main()
-﻿
+
